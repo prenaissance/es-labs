@@ -1,5 +1,0 @@
-{
-    "sketch": "lab0.ino",
-    "output": "build",
-    "board": "arduino:avr:uno"
-}
