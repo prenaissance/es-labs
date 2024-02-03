@@ -34,3 +34,4 @@
 # Arduino
 
 build
+**/c_cpp_properties.json
