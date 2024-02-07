@@ -4,7 +4,7 @@
     {
       "label": "Symlink common",
       "type": "shell",
-      "command": "ld -s \"${workspaceFolder}/common\" \"${fileDirname}/common\"",
+      "command": "ln -s \"${workspaceFolder}/common\" \"${fileDirname}/common\"",
       "windows": {
         "command": "powershell -Command \"Start-Process cmd -ArgumentList '/c mklink /D ${fileDirname}\\common ${workspaceFolder}\\common' -Verb runAs\""
       },
