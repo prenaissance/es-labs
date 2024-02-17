@@ -31,10 +31,13 @@ uint8_t ticksShowingInterval = 0;
 uint32_t lastFlicker = millis();
 uint32_t flickerInterval = 500;
 
+uint32_t lastButtonPress = millis();
+bool shouldShowIdleMessage = false;
+
 void init_lcd()
 {
-    lcd.clear();
     lcd.begin(LCD_COLUMNS, LCD_ROWS);
+    lcd.clear();
     lcd.print("Welcome!");
     delay(500);
 }
@@ -42,6 +45,22 @@ void init_lcd()
 void button_pressed_task()
 {
     ledButtonPressed = digitalRead(LED_BUTTON);
+    if (ledButtonPressed)
+    {
+        lastButtonPress = millis();
+    }
+}
+
+void idle_check_task()
+{
+    if (millis() - lastButtonPress > 5000)
+    {
+        shouldShowIdleMessage = true;
+    }
+    else
+    {
+        shouldShowIdleMessage = false;
+    }
 }
 
 void flicker_task()
@@ -63,11 +82,13 @@ void flicker_task()
     {
         flickerInterval = max(flickerInterval - 100, MIN_FLICKER_INTERVAL_MS);
         ticksShowingInterval = 5;
+        lastButtonPress = millis();
     }
     if (digitalRead(INCREASE_BUTTON))
     {
         flickerInterval += 100;
         ticksShowingInterval = 5;
+        lastButtonPress = millis();
     }
 }
 
@@ -91,6 +112,13 @@ void ui_task()
         lcd.setCursor(0, 1);
         lcd.print("flickering");
     }
+    else if (shouldShowIdleMessage)
+    {
+        lcd.setCursor(0, 0);
+        lcd.print("You've gone");
+        lcd.setCursor(0, 1);
+        lcd.print("idle :(");
+    }
 }
 
 void setup()
@@ -103,6 +131,7 @@ void setup()
     init_lcd();
     scheduler.addTask(button_pressed_task);
     scheduler.addTask(flicker_task);
+    scheduler.addTask(idle_check_task);
     scheduler.addTask(ui_task);
 }
 
