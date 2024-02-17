@@ -9,6 +9,12 @@
         "command": "powershell -Command \"Start-Process cmd -ArgumentList '/c mklink /D ${fileDirname}\\common ${workspaceFolder}\\common' -Verb runAs\""
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Compile mermaid diagrams",
+      "type": "shell",
+      "command": "npx @mermaid-js/mermaid-cli -i \"${file}\" --outputFormat png -b transparent",
+      "problemMatcher": []
     }
   ]
 }
