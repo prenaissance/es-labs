@@ -157,6 +157,7 @@ void uiTask(void *pvParameters)
                 lcd.print("You've gone");
                 lcd.setCursor(0, 1);
                 lcd.print("idle :(");
+                vTaskDelay(pdMS_TO_TICKS(500)); // Delay to show idle message
             }
         }
 
